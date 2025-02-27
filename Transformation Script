@@ -9,6 +9,17 @@ CREATE TABLE employee_data (
 	Salary				INT,
 	Performance_Rating	VARCHAR	-- INT CHECK (Performance_Rating BETWEEN 1 AND 5)
 )
+-- change Performance_Rating from varchar to integer scale
+ALTER TABLE employee_data ADD COLUMN New_Performance_Rating INT
+UPDATE employee_data
+SET New_Performance_Rating =
+    CASE 
+        WHEN Performance_Rating = 'Low Performers' THEN 1
+        WHEN Performance_Rating = 'Average Performers' THEN 2
+        WHEN Performance_Rating = 'High Performers' THEN 3
+    END
+ALTER TABLE employee_data DROP COLUMN Performance_Rating
+ALTER TABLE employee_data RENAME COLUMN New_Performance_Rating TO Performance_Rating
 
 CREATE TABLE salary_to_department_analysis (Department VARCHAR, Avg_Salary FLOAT)
 INSERT INTO salary_to_department_analysis (SELECT Department, AVG(Salary) AS Avg_Salary FROM employee_data GROUP BY Department)

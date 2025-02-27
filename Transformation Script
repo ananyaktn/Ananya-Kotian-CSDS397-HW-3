@@ -27,7 +27,7 @@ INSERT INTO salary_to_department_analysis (SELECT Department, AVG(Salary) AS Avg
 CREATE TABLE salary_to_tenuere_analysis (Years_of_Experience INT, Avg_Salary FLOAT)
 INSERT INTO salary_to_tenuere_analysis (SELECT Years_of_Experience, AVG(Salary) AS Avg_Salary FROM employee_data GROUP BY Years_of_Experience)
 
-CREATE TABLE performance_by_salary_analysis (Performance_Rating VARCHAR, Avg_Salary FLOAT)
+CREATE TABLE performance_by_salary_analysis (Performance_Rating INT, Avg_Salary FLOAT)
 INSERT INTO performance_by_salary_analysis (SELECT Performance_Rating, AVG(Salary) AS Avg_Salary FROM employee_data GROUP BY Performance_Rating)
 
 CREATE TABLE experience_by_age (Age INT, Avg_Years_of_Experience FLOAT)
@@ -44,5 +44,5 @@ INSERT INTO department_by_country (
 	) ranked_departments
 	WHERE rank = 1)
 
-CREATE TABLE experience_by_performance (Performance_Rating VARCHAR, Avg_Years_of_Experience FLOAT)
+CREATE TABLE experience_by_performance (Performance_Rating INT, Avg_Years_of_Experience FLOAT)
 INSERT INTO experience_by_performance (SELECT Performance_Rating, AVG(Years_of_Experience) AS Avg_Years_of_Experience FROM employee_data GROUP BY Performance_Rating ORDER BY Performance_Rating)

@@ -1,3 +1,4 @@
+-- table to load clean dataset
 CREATE TABLE employee_data (
 	EmployeeID			INT PRIMARY	KEY,
 	Name				VARCHAR,
@@ -7,9 +8,10 @@ CREATE TABLE employee_data (
 	Years_of_Experience	INT,
 	Country				VARCHAR,
 	Salary				INT,
-	Performance_Rating	VARCHAR	-- INT CHECK (Performance_Rating BETWEEN 1 AND 5)
+	Performance_Rating	VARCHAR	
 )
--- change Performance_Rating from varchar to integer scale
+
+-- conversion of Performance_Rating from VARCHAR to INT
 ALTER TABLE employee_data ADD COLUMN New_Performance_Rating INT
 UPDATE employee_data
 SET New_Performance_Rating =
@@ -21,17 +23,19 @@ SET New_Performance_Rating =
 ALTER TABLE employee_data DROP COLUMN Performance_Rating
 ALTER TABLE employee_data RENAME COLUMN New_Performance_Rating TO Performance_Rating
 
+-- given transformation tasks
 CREATE TABLE salary_to_department_analysis (Department VARCHAR, Avg_Salary FLOAT)
 INSERT INTO salary_to_department_analysis (SELECT Department, AVG(Salary) AS Avg_Salary FROM employee_data GROUP BY Department)
 
 CREATE TABLE salary_to_tenuere_analysis (Years_of_Experience INT, Avg_Salary FLOAT)
-INSERT INTO salary_to_tenuere_analysis (SELECT Years_of_Experience, AVG(Salary) AS Avg_Salary FROM employee_data GROUP BY Years_of_Experience)
+INSERT INTO salary_to_tenuere_analysis (SELECT Years_of_Experience, AVG(Salary) AS Avg_Salary FROM employee_data GROUP BY Years_of_Experience ORDER BY Years_of_Experience)
 
 CREATE TABLE performance_by_salary_analysis (Performance_Rating INT, Avg_Salary FLOAT)
-INSERT INTO performance_by_salary_analysis (SELECT Performance_Rating, AVG(Salary) AS Avg_Salary FROM employee_data GROUP BY Performance_Rating)
+INSERT INTO performance_by_salary_analysis (SELECT Performance_Rating, AVG(Salary) AS Avg_Salary FROM employee_data GROUP BY Performance_Rating ORDER BY Performance_Rating)
 
+-- additional transformation tasks
 CREATE TABLE experience_by_age (Age INT, Avg_Years_of_Experience FLOAT)
-INSERT INTO experience_by_age (SELECT Age, AVG(Years_of_Experience) AS Avg_Years_of_Experience FROM employee_data GROUP BY Age ORDER BY AGE)
+INSERT INTO experience_by_age (SELECT Age, AVG(Years_of_Experience) AS Avg_Years_of_Experience FROM employee_data GROUP BY Age ORDER BY Age)
 
 CREATE TABLE department_by_country (Country VARCHAR, Department VARCHAR, Employees INT)
 INSERT INTO department_by_country (
